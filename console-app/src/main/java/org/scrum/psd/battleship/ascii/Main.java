@@ -2,6 +2,9 @@ package org.scrum.psd.battleship.ascii;
 
 import com.diogonunes.jcdp.color.ColoredPrinter;
 import com.diogonunes.jcdp.color.api.Ansi;
+
+import org.scrum.psd.battleship.board.BoardStatus;
+import org.scrum.psd.battleship.board.GameBoard;
 import org.scrum.psd.battleship.controller.GameController;
 import org.scrum.psd.battleship.controller.dto.Letter;
 import org.scrum.psd.battleship.controller.dto.Position;
@@ -15,8 +18,14 @@ public class Main {
     private static List<Ship> myFleet;
     private static List<Ship> enemyFleet;
     private static ColoredPrinter console;
+    
+    private static GameBoard own;
+    private static GameBoard enemy;
 
     public static void main(String[] args) {
+    	own = new GameBoard();
+    	enemy = new GameBoard();
+
         console = new ColoredPrinter.Builder(1, false).build();
 
         console.setForegroundColor(Ansi.FColor.MAGENTA);
@@ -126,6 +135,8 @@ public class Main {
     private static void InitializeMyFleet() {
         Scanner scanner = new Scanner(System.in);
         myFleet = GameController.initializeShips();
+        
+        own.print();
 
         console.println("Please position your fleet (Game board has size from A to H and 1 to 8) :");
 
@@ -133,9 +144,17 @@ public class Main {
             console.println("");
             console.println(String.format("Please enter the positions for the %s (size: %s)", ship.getName(), ship.getSize()));
             for (int i = 1; i <= ship.getSize(); i++) {
+            	
+            	own.print();
+
                 console.println(String.format("Enter position %s of %s (i.e A3):", i, ship.getSize()));
 
                 String positionInput = scanner.next();
+                if (!Character.isLetter(positionInput.charAt(0)) || !Character.isDigit(positionInput.charAt(1))) {
+                	System.err.println("Wrong Input");
+                	System.exit(0);
+                }
+                own.set(positionInput.charAt(0) - 65, Integer.valueOf(positionInput.charAt(1)) - 49, BoardStatus.OCCUPIED);
                 ship.addPosition(positionInput);
             }
         }
