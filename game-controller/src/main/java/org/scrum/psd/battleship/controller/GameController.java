@@ -1,9 +1,11 @@
 package org.scrum.psd.battleship.controller;
+import org.scrum.psd.battleship.board.BoardStatus;
 
 import org.scrum.psd.battleship.controller.dto.Color;
 import org.scrum.psd.battleship.controller.dto.Letter;
 import org.scrum.psd.battleship.controller.dto.Position;
 import org.scrum.psd.battleship.controller.dto.Ship;
+import org.scrum.psd.battleship.board.GameBoard;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -51,4 +53,16 @@ public class GameController {
         Position position = new Position(letter, number);
         return position;
     }
+	
+	public static boolean isShootPositionValid(GameBoard board, Position position){
+		BoardStatus [][] board2 = board.getBoard2();
+		
+		int rownum = 0;
+
+		BoardStatus status = board2[position.getRow()][position.getColumn().ordinal()];
+		
+		return status == BoardStatus.HIDDEN;
+		
+	}
+	
 }
