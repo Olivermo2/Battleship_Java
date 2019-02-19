@@ -99,21 +99,25 @@ public class Main {
         console.println("Please position your fleet (Game board has size from A to H and 1 to 8) :");
 
         for (Ship ship : myFleet) {
+			
             console.println("");
             console.println(String.format("Please enter the positions for the %s (size: %s)", ship.getName(), ship.getSize()));
             for (int i = 1; i <= ship.getSize(); i++) {
             	
+				inputShipPosition(ship, i, scanner);
+				
+				/*
             	own.print();
 
                 console.println(String.format("Enter position %s of %s (i.e A3):", i, ship.getSize()));
 
                 String positionInput = scanner.next();
-                if (!Character.isLetter(positionInput.charAt(0)) || !Character.isDigit(positionInput.charAt(1))) {
+                while (!Character.isLetter(positionInput.charAt(0)) || !Character.isDigit(positionInput.charAt(1)) || positionInput.charAt(1) < 1 || positionInput.charAt(1) > 8) {
                 	System.err.println("Wrong Input");
-                	System.exit(0);
                 }
                 own.set(positionInput.charAt(0) - 65, Integer.valueOf(positionInput.charAt(1)) - 49, BoardStatus.OCCUPIED);
                 ship.addPosition(positionInput);
+				*/
             }
         }
     }
@@ -168,6 +172,36 @@ public class Main {
 		console.println("            -   (\\- |  \\ /  |  /)  -");
 		console.println("                 -\\  \\     /  /-");
 		console.println("                   \\  \\   /  /");
+	}
+	
+	private static void inputShipPosition(Ship ship, int shipPart, Scanner scanner) {
+		boolean isWrongPosition = true;
+		
+		while (isWrongPosition) {
+			own.print();
+
+			console.println(String.format("Enter position %s of %s (i.e A3):", shipPart, ship.getSize()));
+
+			String positionInput = scanner.next();
+			
+			if(positionInput.equals("exit")){
+				System.exit(0);
+			}
+			
+			isWrongPosition = !Character.isLetter(positionInput.charAt(0)) ||
+								!Character.isDigit(positionInput.charAt(1)) ||
+								Integer.valueOf(positionInput.charAt(1)) - 49 < 0 ||
+								Integer.valueOf(positionInput.charAt(1)) - 49 > 7;
+			
+			if (isWrongPosition) {
+				console.println(String.format("Wrong Input, Please enter the positions for the %s (size: %s)", ship.getName(), ship.getSize()));
+			}
+			else {
+				own.set(positionInput.charAt(0) - 65, Integer.valueOf(positionInput.charAt(1)) - 49, BoardStatus.OCCUPIED);
+				ship.addPosition(positionInput);
+				break;
+			}
+		}
 	}
 	
 	private static void play(GameBoard board, List<Ship> fleet, String entityName, boolean isPlayer) {

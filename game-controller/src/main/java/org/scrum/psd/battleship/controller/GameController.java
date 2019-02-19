@@ -55,6 +55,13 @@ public class GameController {
     }
 	
 	public static boolean isShootPositionValid(GameBoard board, Position position){
+		boolean isValid = isNotShootAgain(board, position);
+		
+		return isNotShootAgain(board, position) && isValidPosition(position);
+		
+	}
+	
+	private static boolean isNotShootAgain(GameBoard board, Position position) {
 		BoardStatus [][] board2 = board.getBoard2();
 		
 		int rownum = 0;
@@ -62,7 +69,10 @@ public class GameController {
 		BoardStatus status = board2[position.getRow()][position.getColumn().ordinal()];
 		
 		return status == BoardStatus.HIDDEN;
-		
 	}
 	
+	private static boolean isValidPosition(Position position) {
+		return (position.getRow() > 0 && position.getRow() < 8) &&
+				(position.getColumn() != null);
+	}
 }
