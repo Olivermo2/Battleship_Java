@@ -33,22 +33,22 @@ public class GameBoard {
 	
 	public void print() {
 		System.out.println("");
-		System.out.println("  1Ô∏è‚É£2Ô∏è‚É£3Ô∏è‚É£4Ô∏è‚É£5Ô∏è‚É£6Ô∏è‚É£7Ô∏è‚É£8Ô∏è‚É£");
+		System.out.println("  1É£2É£3É£4É£5É£6É£7É£8É£");
 		for (int i = 0; i < row; ++i) {
 			for (int j = 0; j < column; ++j) {
 				if (j == 0) {
 					System.out.print(Character.toString ((char) (65 + i)) + " ");
 				}
 				if (board[i][j] == BoardStatus.HIDDEN)
-					System.out.print("‚¨úÔ∏è");
+					System.out.print("_É£");
 				else if (board[i][j] == BoardStatus.WATER)
-					System.out.print("‚¨õ");
+					System.out.print("WÉ£");
 				else if (board[i][j] == BoardStatus.DESTROYED)
-					System.out.print("üî¥");
+					System.out.print("FÉ£");
 				else if (board[i][j] == BoardStatus.OCCUPIED)
-					System.out.print("üîµ");
+					System.out.print("OÉ£");
 				else
-					System.out.print("‚ö™");
+					System.out.print("?É£");
 			}
 			System.out.println("");
 		}
@@ -56,22 +56,22 @@ public class GameBoard {
 	
 	public void printBoard2() {
 		System.out.println("");
-		System.out.println("  1Ô∏è‚É£2Ô∏è‚É£3Ô∏è‚É£4Ô∏è‚É£5Ô∏è‚É£6Ô∏è‚É£7Ô∏è‚É£8Ô∏è‚É£");
+		System.out.println("   1 2É£3É£4É£5É£6É£7É£8É£");
 		for (int i = 0; i < row; ++i) {
 			for (int j = 0; j < column; ++j) {
 				if (j == 0) {
 					System.out.print(Character.toString ((char) (65 + i)) + " ");
 				}
 				if (board2[i][j] == BoardStatus.HIDDEN)
-					System.out.print("‚¨õ");
+					System.out.print("_É£");
 				else if (board2[i][j] == BoardStatus.WATER)
-					System.out.print("‚¨úÔ∏è");
+					System.out.print("WÉ£");
 				else if (board2[i][j] == BoardStatus.DESTROYED)
-					System.out.print("üî¥");
+					System.out.print("FÉ£");
 				else if (board2[i][j] == BoardStatus.OCCUPIED)
-					System.out.print("üîµ");
+					System.out.print("OÉ£");
 				else
-					System.out.print("‚ö™");
+					System.out.print("?É£");
 			}
 			System.out.println("");
 		}

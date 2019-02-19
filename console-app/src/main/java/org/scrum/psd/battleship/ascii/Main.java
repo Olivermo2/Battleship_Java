@@ -21,6 +21,7 @@ public class Main {
     
     private static GameBoard own;
     private static GameBoard enemy;
+    private static String[] shipP = new String[64];
 
     public static void main(String[] args) {
     	own = new GameBoard();
@@ -132,10 +133,11 @@ public class Main {
         InitializeEnemyFleet();
     }
 
-    private static void InitializeMyFleet() {
+    @SuppressWarnings("unlikely-arg-type")
+	private static void InitializeMyFleet() {
         Scanner scanner = new Scanner(System.in);
         myFleet = GameController.initializeShips();
-        
+        boolean overlapped = false;
         own.print();
 
         console.println("Please position your fleet (Game board has size from A to H and 1 to 8) :");
@@ -148,14 +150,41 @@ public class Main {
             	own.print();
 
                 console.println(String.format("Enter position %s of %s (i.e A3):", i, ship.getSize()));
-
+                
                 String positionInput = scanner.next();
                 if (!Character.isLetter(positionInput.charAt(0)) || !Character.isDigit(positionInput.charAt(1))) {
                 	System.err.println("Wrong Input");
                 	System.exit(0);
                 }
-                own.set(positionInput.charAt(0) - 65, Integer.valueOf(positionInput.charAt(1)) - 49, BoardStatus.OCCUPIED);
+                
+                console.println("Input is " + positionInput);
+                // Check if ship is occupied
+                overlapped = false;
+                for (Ship shipA : myFleet) {
+                	if(shipA.isPlaced()) {
+                		List<Position> positions = shipA.getPositions();
+                		console.println("Size " + positions.size());
+                		for (i=0;i<positions.size();i++) {
+                			if(String.valueOf(positions.get(i).getColumn()).equals(String.valueOf(positionInput.charAt(0)))
+                					&& String.valueOf(positions.get(i).getRow()).equals(String.valueOf(positionInput.charAt(1)))) {
+                				console.println("Overlapped");
+                				overlapped = true;
+                				break;
+                			}                				
+                		}
+                	}
+                		
+                }
+                // 
+//                shipP[0] = positionInput;
+                
+                if(overlapped) { 
+                	i--;
+                	continue;
+                }
+                own.set(positionInput.charAt(0) - 65, Integer.valueOf(positionInput.charAt(1)) - 49, BoardStatus.OCCUPIED);                
                 ship.addPosition(positionInput);
+                ship.setPlaced(true);
             }
         }
     }
