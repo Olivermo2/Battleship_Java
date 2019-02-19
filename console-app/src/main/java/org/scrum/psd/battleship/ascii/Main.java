@@ -53,100 +53,13 @@ public class Main {
     private static void StartGame() {
         Scanner scanner = new Scanner(System.in);
 
-		console.println("");
-        console.print("\033[2J\033[;H");
-        console.println("                  __");
-        console.println("                 /  \\");
-        console.println("           .-.  |    |");
-        console.println("   *    _.-'  \\  \\__/");
-        console.println("    \\.-'       \\");
-        console.println("   /          _/");
-        console.println("  |      _  /\" \"");
-        console.println("  |     /_\'");
-        console.println("   \\    \\_/");
-        console.println("    \" \"\" \"\" \"\" \"");
+		printCanon();
 
         do {
-			boolean isShootPositionValid = false;
-			Position position;
-			boolean isHit = false;
 			
-			while (!isShootPositionValid || isHit)
-			{
-				console.println("");
-				console.println("Player, it's your turn");
-				console.println("Enter coordinates for your shot :");
-				position = parsePosition(scanner.next());
-
-				isShootPositionValid = GameController.isShootPositionValid(own, position);
+			play(own, enemyFleet, "Player", true);
+			play(enemy, myFleet, "Computer", false);
 			
-				if (isShootPositionValid)
-				{
-					isHit = GameController.checkIsHit(enemyFleet, position);
-					console.println("");
-					console.println(String.format("Player shoot in %s%s and %s", position.getColumn(), position.getRow(), isHit ? "hit your ship !" : "miss"));
-					if (isHit) {
-						own.setBoard2(position.getRow(), position.getColumn().ordinal(), BoardStatus.DESTROYED);
-						beep();
-
-						console.println("                \\         .  ./");
-						console.println("              \\      .:\" \";'.:..\" \"   /");
-						console.println("                  (M^^.^~~:.'\" \").");
-						console.println("            -   (/  .    . . \\ \\)  -");
-						console.println("               ((| :. ~ ^  :. .|))");
-						console.println("            -   (\\- |  \\ /  |  /)  -");
-						console.println("                 -\\  \\     /  /-");
-						console.println("                   \\  \\   /  /");
-					}
-					else {
-						own.setBoard2(position.getRow(), position.getColumn().ordinal(), BoardStatus.WATER);
-					}
-
-					console.println(isHit ? "Yeah ! Nice hit !" : "Miss");
-				}
-				else
-				{
-					console.println(String.format("Player shoot in %s%s and %s", position.getColumn(), position.getRow(), "Invalid position.  Please enter again."));
-				}
-			}
-
-			isShootPositionValid = false;
-			
-			while (!isShootPositionValid || isHit)
-			{
-				position = getRandomPosition();
-				isShootPositionValid = GameController.isShootPositionValid(enemy, position);
-				
-				if (isShootPositionValid)
-				{
-					isHit = GameController.checkIsHit(myFleet, position);
-					console.println("");
-					console.println(String.format("Computer shoot in %s%s and %s", position.getColumn(), position.getRow(), isHit ? "hit your ship !" : "miss"));
-					if (isHit) {
-						enemy.setBoard2(position.getRow(), position.getColumn().ordinal(), BoardStatus.DESTROYED);
-						
-						beep();
-
-						console.println("                \\         .  ./");
-						console.println("              \\      .:\" \";'.:..\" \"   /");
-						console.println("                  (M^^.^~~:.'\" \").");
-						console.println("            -   (/  .    . . \\ \\)  -");
-						console.println("               ((| :. ~ ^  :. .|))");
-						console.println("            -   (\\- |  \\ /  |  /)  -");
-						console.println("                 -\\  \\     /  /-");
-						console.println("                   \\  \\   /  /");
-
-					}
-					
-					else {
-						enemy.setBoard2(position.getRow(), position.getColumn().ordinal(), BoardStatus.WATER);
-					}
-				}
-				else
-				{
-					console.println("Invalid position.  Please enter again.");
-				}
-			}
         } while (true);
     }
 
@@ -162,11 +75,11 @@ public class Main {
     }
 
     private static Position getRandomPosition() {
-        int rows = 8;
-        int lines = 8;
+        int rows = 7;
+        int lines = 7;
         Random random = new Random();
-        Letter letter = Letter.values()[random.nextInt(lines)];
-        int number = random.nextInt(rows);
+        Letter letter = Letter.values()[random.nextInt(lines)+1];
+        int number = random.nextInt(rows)+1;
         Position position = new Position(letter, number);
         return position;
     }
@@ -230,4 +143,75 @@ public class Main {
         enemyFleet.get(4).getPositions().add(new Position(Letter.C, 5));
         enemyFleet.get(4).getPositions().add(new Position(Letter.C, 6));
     }
+	
+	private static void printCanon() {
+		console.println("");
+        console.print("\033[2J\033[;H");
+        console.println("                  __");
+        console.println("                 /  \\");
+        console.println("           .-.  |    |");
+        console.println("   *    _.-'  \\  \\__/");
+        console.println("    \\.-'       \\");
+        console.println("   /          _/");
+        console.println("  |      _  /\" \"");
+        console.println("  |     /_\'");
+        console.println("   \\    \\_/");
+        console.println("    \" \"\" \"\" \"\" \"");
+	}
+	
+	private static void printHit() {
+		console.println("                \\         .  ./");
+		console.println("              \\      .:\" \";'.:..\" \"   /");
+		console.println("                  (M^^.^~~:.'\" \").");
+		console.println("            -   (/  .    . . \\ \\)  -");
+		console.println("               ((| :. ~ ^  :. .|))");
+		console.println("            -   (\\- |  \\ /  |  /)  -");
+		console.println("                 -\\  \\     /  /-");
+		console.println("                   \\  \\   /  /");
+	}
+	
+	private static void play(GameBoard board, List<Ship> fleet, String entityName, boolean isPlayer) {
+		boolean isShootPositionValid = false;
+		Position position;
+		boolean isHit = false;
+		Scanner scanner = new Scanner(System.in);
+		
+		while (!isShootPositionValid || isHit)
+		{
+			console.println("");
+			
+			if (isPlayer) {
+				console.println(String.format("%s, it's your turn", entityName));
+				console.println("Enter coordinates for your shot :");
+				position = parsePosition(scanner.next());
+			}
+			else {
+				position = getRandomPosition();
+			}
+
+			isShootPositionValid = GameController.isShootPositionValid(board, position);
+		
+			if (isShootPositionValid)
+			{
+				isHit = GameController.checkIsHit(fleet, position);
+				console.println("");
+				console.println(String.format("%s shoot in %s%s and %s", entityName, position.getColumn(), position.getRow(), isHit ? "hit your ship !" : "miss"));
+				if (isHit) {
+					board.setBoard2(position.getRow(), position.getColumn().ordinal(), BoardStatus.DESTROYED);
+					beep();
+
+					printHit();
+				}
+				else {
+					board.setBoard2(position.getRow(), position.getColumn().ordinal(), BoardStatus.WATER);
+				}
+
+				console.println(isHit ? "Yeah ! Nice hit !" : "Miss");
+			}
+			else
+			{
+				console.println(String.format("%s shoot in %s%s and %s", entityName, position.getColumn(), position.getRow(), "Invalid position.  Please enter again."));
+			}
+		}
+	}
 }
