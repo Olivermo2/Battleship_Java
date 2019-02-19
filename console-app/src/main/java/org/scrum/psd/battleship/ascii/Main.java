@@ -41,7 +41,7 @@ public class Main {
         console.println("                    +---------------___[}-_===_.'____                 /\\");
         console.println("                ____`-' ||___-{]_| _[}-  |     |_[___\\==--            \\/   _");
         console.println(" __..._____--==/___]_|__|_____________________________[___\\==--____,------' .7");
-        console.println("|                        We1come to Battleship       v2.0              BB-61/");
+        console.println("|                        We1come to Battleshp       v2.0              BB-61/");
         console.println(" \\_________________________________________________________________________|");
         console.println("");
         console.clear();
