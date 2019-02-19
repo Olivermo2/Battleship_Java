@@ -8,7 +8,7 @@ jdk:
 
 script:
   - ./gradlew build
-  - ./gradlew sonarqube   -Dsonar.projectKey=lorenzcheung_Battleship_Java   -Dsonar.organization=lorenzcheung-github   -Dsonar.host.url=https://sonarcloud.io   -Dsonar.login=e5ee2eb0fbfecabf52322bd7e5241216019892ad
+  - ./gradlew sonarqube   -Dsonar.projectKey=chiwailau_Battleship_Java   -Dsonar.organization=chiwailau-github   -Dsonar.host.url=https://sonarcloud.io   -Dsonar.login=04b01582cd77339ea883c8349f9793d0ade7956b
 
 
 notifications:
